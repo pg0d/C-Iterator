@@ -3,6 +3,13 @@
 
 #define NEWLINE printf("\n")
 
+
+void square(void *n)
+{
+    int *p = (int *)n;
+    *p = *p * *p;
+}
+
 int main()
 {
     Iter ss = h_iter(char *, ((char *[]){"Smashing", "The", "Stack"}));
@@ -20,6 +27,15 @@ int main()
     Iter ints = h_iter(int, ((int []){1, 2, 3, 4}));
     int *int_elements = (int *)ints.xs;
 
+    for (size_t j = 0; j < ints.count; j++) {
+        printf("%d ", int_elements[j]);
+    }
+
+    map(&ints, square);
+
+    NEWLINE;
+
+    printf("After Square: \n");
     for (size_t j = 0; j < ints.count; j++) {
         printf("%d ", int_elements[j]);
     }

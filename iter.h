@@ -6,7 +6,8 @@
 #include <stdlib.h>
 #include <assert.h>
 
-typedef struct Iter {
+typedef struct Iter
+{
     void *xs;
     size_t count;
     size_t size;
@@ -14,19 +15,19 @@ typedef struct Iter {
 
 #define h_iter(TYPE, ARRAY) ({                                              \
     static_assert(!__builtin_types_compatible_p(__typeof__(ARRAY), TYPE *), \
-        "ARRAY must be an array, not a pointer");                           \
+                  "ARRAY must be an array, not a pointer");                 \
     TYPE *_array = ARRAY;                                                   \
     size_t _count = sizeof(ARRAY) / sizeof(TYPE);                           \
-    Iter iter = {                                                             \
+    Iter iter = {                                                           \
         .xs = malloc(_count * sizeof(TYPE)),                                \
         .count = _count,                                                    \
-        .size = sizeof(TYPE)                                                \
-    };                                                                      \
-    if (iter.xs)                                                             \
-        memcpy(iter.xs, _array, _count * sizeof(TYPE));                      \
-    iter;                                                                    \
+        .size = sizeof(TYPE)};                                              \
+    if (iter.xs)                                                            \
+        memcpy(iter.xs, _array, _count * sizeof(TYPE));                     \
+    iter;                                                                   \
 })
 
+void map(Iter *iter, void (*f)(void *));
 void free_iter(Iter *iter);
 
 #endif
